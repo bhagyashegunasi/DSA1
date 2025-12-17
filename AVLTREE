@@ -1,0 +1,67 @@
+from collections import deque
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+def insert(root, data):
+    if root is None:
+        return Node(data)
+
+    q = deque([root])
+    while q:
+        n = q.popleft()
+
+        if n.left is None:
+            n.left = Node(data)
+            return root
+        else:
+            q.append(n.left)
+
+        if n.right is None:
+            n.right = Node(data)
+            return root
+        else:
+            q.append(n.right)
+
+
+def search(root, key):
+    if root is None:
+        return False
+    if root.data == key:
+        return True
+    return search(root.left, key) or search(root.right, key)
+
+
+def height(root):
+    if root is None:
+        return -1
+    return 1 + max(height(root.left), height(root.right))
+
+
+def count_nodes(root):
+    if root is None:
+        return 0
+    return 1 + count_nodes(root.left) + count_nodes(root.right)
+
+
+def count_leaf_nodes(root):
+    if root is None:
+        return 0
+    if root.left is None and root.right is None:
+        return 1
+    return count_leaf_nodes(root.left) + count_leaf_nodes(root.right)
+
+
+# Main
+root = None
+for v in [10, 20, 30, 40, 50]:
+    root = insert(root, v)
+
+print(search(root, 30))
+print(height(root))
+print(count_nodes(root))
+print(count_leaf_nodes(root))
